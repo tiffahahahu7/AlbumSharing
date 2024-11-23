@@ -38,11 +38,23 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-            <li><a href="MyFriends.php">My Friends</a></li>
-            <li><a href="MyAlbums.php">My Albums</a></li>
-            <li><a href="MyPictures.php">My Pictures</a></li>
-            <li><a href="UploadPictures.php">Upload Pictures</a></li>
-            <?php global $user; print ($user) ? '<li><a href="Logout.php">Log Out</a></li>' : '<li><a href="Login.php">Log In</a></li>';?>            
+            <li class="active"><a href="Index.php">Home</a></li>
+            <?php
+            if ($user && $user->getIsAdmin())
+            {
+                echo '<li><a href="AdminPage.php">Admin</a></li>';
+            }
+            else
+            {
+                echo '<li><a href="MyFriends.php">My Friends</a></li>';
+                echo '<li><a href="MyFriends.php">My Friends</a></li>';
+                echo '<li><a href="MyAlbums.php">My Albums</a></li>';
+                echo '<li><a href="MyPictures.php">My Pictures</a></li>';
+                echo '<li><a href="UploadPictures.php">Upload Pictures</a></li>';
+            }
+            print ($user) ? '<li><a href="Logout.php">Log Out</a></li>' : '<li><a href="Login.php">Log In</a></li>';
+
+            ?>         
           </ul>
         </div>
       </div>  
