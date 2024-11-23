@@ -5,6 +5,11 @@ session_start();
 //check whether the user is logged in
 if (isset($_SESSION["user"])) {
     $user = $_SESSION["user"];
+    if ($user->getIsAdmin())
+    {
+        header("Location: AdminPage.php");
+        exit();
+    }
 } else {
     header("Location: Login.php");
     exit();
