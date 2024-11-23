@@ -185,6 +185,7 @@ include("./common/header.php");
                         }
                     }
                     ?>
+                </div>      
 <?php endif; ?>
                 <button type="submit" name="albumChangeBtn" id="albumSelectionChange" hidden></button>
                 <button type="submit" name="thumbnailChangeBtn" id="thumbnailChange" hidden></button>

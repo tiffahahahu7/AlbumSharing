@@ -12,13 +12,13 @@ function getPDO() {
 function getUserByIdAndPassword($userId, $password) {
     $pdo = getPDO();
 
-    $sql = "SELECT UserId, Name, Phone FROM User WHERE UserId = :userId AND Password = :password";
+    $sql = "SELECT UserId, Name, Phone, isAdmin FROM User WHERE UserId = :userId AND Password = :password";
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['userId' => $userId, 'password' => $password]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row) {
-        return new User($row['UserId'], $row['Name'], $row['Phone']);
+        return new User($row['UserId'], $row['Name'], $row['Phone'], $row['isAdmin']);
     } else {
         return null;
     }
@@ -194,6 +194,25 @@ function getMyOwnAlbums($userId) {
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['userId' => $userId]);
+
+    foreach ($stmt as $row) {
+        $album = new Album($row['Album_Id'], $row['Title'], $row['Description'], $row['Owner_Id'], $row['Accessibility_Code']);
+        $albums[] = $album;
+    }
+
+    return $albums;
+}
+
+// for AdminPage.php
+function getAllAlbums() {
+    $albums = array();
+
+    $pdo = getPDO();
+
+    $sql = "SELECT * FROM Album";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
 
     foreach ($stmt as $row) {
         $album = new Album($row['Album_Id'], $row['Title'], $row['Description'], $row['Owner_Id'], $row['Accessibility_Code']);
