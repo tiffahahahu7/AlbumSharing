@@ -47,7 +47,6 @@
             else
             {
                 echo '<li><a href="MyFriends.php">My Friends</a></li>';
-                echo '<li><a href="MyFriends.php">My Friends</a></li>';
                 echo '<li><a href="MyAlbums.php">My Albums</a></li>';
                 echo '<li><a href="MyPictures.php">My Pictures</a></li>';
                 echo '<li><a href="UploadPictures.php">Upload Pictures</a></li>';
