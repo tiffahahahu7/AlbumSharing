@@ -6,11 +6,13 @@ class User {
     private $name;
     private $phone;
     private $messages;
+    private $isAdmin;
 
-    public function __construct($userId, $name, $phone) {
+    public function __construct($userId, $name, $phone, $isAdmin) {
         $this->userId = $userId;
         $this->name = $name;
         $this->phone = $phone;
+        $this->isAdmin = $isAdmin;
 
         $this->messages = array();
     }
@@ -25,6 +27,10 @@ class User {
 
     public function getPhone() {
         return $this->phone;
+    }
+    
+    public function getIsAdmin() {
+        return $this->isAdmin;
     }
 }
 

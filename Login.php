@@ -41,8 +41,18 @@
             }
             if ($user != null){
                 $_SESSION['user'] = $user; 
-                header("Location: MyAlbums.php");
-                exit();                  
+                
+                if ($user->getIsAdmin())
+                {
+                    header("Location: AdminPage.php");
+                    exit();
+                }
+                else
+                {
+                    header("Location: MyAlbums.php");
+                    exit();                  
+                }
+                
             } 
         }         
     }      
