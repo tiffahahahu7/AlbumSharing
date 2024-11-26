@@ -195,10 +195,6 @@ include("./common/header.php");
                     <button type="submit" name="albumChangeBtn" id="albumSelectionChange" hidden></button>
                     <button type="submit" name="thumbnailChangeBtn" id="thumbnailChange" hidden></button>
                 </div>
-            <div class="col-md-5">
-                <br>
-                <button type="submit" name="deleteBtn" class="btn btn-primary">Delete Photo</button>
-            </div>
             
         </div>
     </form>
