@@ -16,6 +16,8 @@
         @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
         </style>
 
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 </head>
 
 <body>
