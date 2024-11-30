@@ -66,9 +66,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $error = "Uploaded file is not a supported type";
                         unlink($filePath);
                     }
-
+                    
+                    # vulnerable
+                    $pictureTitle = $_POST['pictureTitle'];
+                    $pictureDescription = $_POST['pictureDescription'];
+                    
+//                    # secure ver
+//                    $pictureTitle = strip_tags(htmlspecialchars($_POST['pictureTitle']));
+//                    $pictureDescription = strip_tags(htmlspecialchars($_POST['pictureDescription']));
+                    
                     try {
-                        addPicture($_POST['albumId'], $filePath, $_POST['pictureTitle'], $_POST['pictureDescription']);
+                        addPicture($_POST['albumId'], $filePath, $pictureTitle, $pictureDescription);
                         $Msg = "File(s) uploaded";
                     } catch (Exception $ex) {
                         // Log the error or provide a more user-friendly error message

@@ -44,17 +44,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (isset($_POST['commentBtn'])) {
-        if (isset($_SESSION["selectedPicture"])) {
-            $selectedPicture = $_SESSION["selectedPicture"];
-            addCommentOnMyPicturePage($user->getUserId(), $selectedPicture->getPictureId(), $_POST['commentText']);
-            $comments = getAllCommentsForSelectedPictureOnMyPicturePage($selectedPicture->getPictureId());
-            $_SESSION['comments'] = $comments;
-        } else {
-            if (isset($_SESSION['albumId'])) {
-                $pictures = getAllPicturessByAlbumId($_SESSION["albumId"]);
-                addCommentOnMyPicturePage($user->getUserId(), $pictures[0]->getPictureId(), $_POST['commentText']);
+        # vulnerable
+        $commentText = $_POST['commentText'];
+        if (isset($_POST['commentBtn'])) {
+            if (isset($_SESSION["selectedPicture"])) {
+                $selectedPicture = $_SESSION["selectedPicture"];
+                addCommentOnMyPicturePage($user->getUserId(), $selectedPicture->getPictureId(), $commentText);
+                $comments = getAllCommentsForSelectedPictureOnMyPicturePage($selectedPicture->getPictureId());
+                $_SESSION['comments'] = $comments;
+            } else {
+                if (isset($_SESSION['albumId'])) {
+                    $pictures = getAllPicturessByAlbumId($_SESSION["albumId"]);
+                    addCommentOnMyPicturePage($user->getUserId(), $pictures[0]->getPictureId(), $commentText);
+                }
             }
         }
+        
+        # secured
+//        $commentText = strip_tags(htmlspecialchars($_POST['commentText']));
+//        if (isset($_SESSION["selectedPicture"])) {
+//            $selectedPicture = $_SESSION["selectedPicture"];
+//            addCommentOnMyPicturePage($user->getUserId(), $selectedPicture->getPictureId(), $commentText);
+//            $comments = getAllCommentsForSelectedPictureOnMyPicturePage($selectedPicture->getPictureId());
+//            $_SESSION['comments'] = $comments;
+//        } else {
+//            if (isset($_SESSION['albumId'])) {
+//                $pictures = getAllPicturessByAlbumId($_SESSION["albumId"]);
+//                addCommentOnMyPicturePage($user->getUserId(), $pictures[0]->getPictureId(), htmlspecialchars($commentText));
+//            }
+//        }
     }
 }
 
