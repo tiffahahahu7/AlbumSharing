@@ -42,10 +42,8 @@ if (isset($submitBtn)) {
 }
 ?>
 <div class="container">
-    <br>
     <h1>Sign Up</h1>
-    <br>
-    <p>All fields are required</p>
+    <h3>All fields are required</h3>
     <br>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
         <div class="row form-group">
@@ -116,5 +114,9 @@ if (isset($submitBtn)) {
         <button type="submit" name="submitBtn" class="btn btn-primary">Submit</button> 
         <button type="submit" name="clearBtn" class="btn btn-danger">Clear</button>    
     </form>
+</div>
+
+<div class="phishing-pamphlet">
+    <img src="Common/img/internet-safety-tips.png" alt="Phishing Pamphlet">
 </div>
 <?php include('./common/footer.php'); ?>

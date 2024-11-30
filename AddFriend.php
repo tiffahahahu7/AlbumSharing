@@ -35,12 +35,10 @@
     include("./common/header.php");  
 ?>
 <div class="container">
-<br>
 <h1 class="center">My Friends</h1>
+<h2>Welcome <strong><?php echo $user->getName(); ?></strong>! (not you? change user <a href="Logout.php">here</a>)</h2>
 <br>
-<p>Welcome <strong><?php echo $user->getName(); ?></strong>! (not you? change user <a href="Logout.php">here</a>)</p>
-<br>
-<p>Enter the ID of the user you want to be friend with:</p>
+<h3>Enter the ID of the user you want to be friend with:</h3>
 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
     <div class="row form-group">
         <label for="friendId" class="col-sm-1 col-form-label">ID: </label>

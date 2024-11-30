@@ -1,6 +1,6 @@
-<footer style="position: absolute; bottom: 0; width: 100%; height: 60px; background-color: darkgreen;">
+<footer style="position: absolute; bottom: -160px; width: 100%; height: 160px; background-color: #CDB4DB;">
     <div class="container">
-        <p style="text-align: center; padding: 10px; color: white;">&copy; Algonquin College 2023 - <?php date_default_timezone_set("America/Toronto");
+        <p style="text-align: center; padding: 10px; color: white;">&copy; Bee Yourself 2021 - <?php date_default_timezone_set("America/Toronto");
 print Date("Y");
 ?>. All Rights Reserved</p>
     </div>

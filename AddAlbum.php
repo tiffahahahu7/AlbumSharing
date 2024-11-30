@@ -40,10 +40,8 @@
     include("./common/header.php");  
 ?>
 <div class="container">
-<br>
 <h1 class="center">Create New Album</h1>
-<br>
-<p>Welcome <strong><?php echo $user->getName(); ?></strong>! (not you? change user <a href="Logout.php">here</a>)</p>
+<h2>Welcome <strong><?php echo $user->getName(); ?></strong>! (not you? change user <a href="Logout.php">here</a>)</h2>
 <br>
 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
     <div class="row form-group">
