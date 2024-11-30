@@ -1,1 +1,13 @@
+# ignore the private files in nbproject
 /nbproject/private/
+
+# ignore ini file
+Database.ini
+
+# mac os files
+.DS_Store
+
+# ignore folders
+/originals
+/images
+/thumbnails
