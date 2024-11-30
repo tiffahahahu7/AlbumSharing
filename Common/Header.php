@@ -42,7 +42,7 @@
             <?php
             if ($user && $user->getIsAdmin())
             {
-                echo '<li><a href="AdminPage.php">Admin</a></li>';
+                echo '<li><a href="Admin.php">Admin</a></li>';
             }
             else
             {
