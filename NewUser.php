@@ -118,8 +118,4 @@ if (isset($submitBtn)) {
         <button type="submit" name="clearBtn" class="btn btn-danger">Clear</button>    
     </form>
 </div>
-<br>
-<div class="col-md-12 text-center">
-    <img class="img-fluid" width=80% src="Common/img/internet-safety-tips.png" alt="Phishing Pamphlet">
-</div>
 <?php include('./common/footer.php'); ?>
