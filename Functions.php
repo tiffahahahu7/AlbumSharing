@@ -9,8 +9,21 @@ function getPDO() {
     return new PDO($dsn, $scriptUser, $scriptPassword);
 }
 
+function getAdminPDO() {
+    $dbConnection = parse_ini_file("Database.ini");
+    extract($dbConnection);
+    return new PDO($dsn, $adminUser, $scriptPassword);
+}
+
 function getUserByIdAndPassword($userId, $password) {
-    $pdo = getPDO();
+    if ($userId == 'admin1')
+    {
+        $pdo = getAdminPDO();
+    }
+    else
+    {
+        $pdo = getPDO();
+    }
 
     $sql = "SELECT UserId, Name, Phone, isAdmin FROM User WHERE UserId = :userId AND Password = :password";
 
@@ -25,7 +38,16 @@ function getUserByIdAndPassword($userId, $password) {
 }
 
 function addNewUser($userId, $name, $phone, $password) {
-    $pdo = getPDO();
+    //$pdo = getPDO();
+    
+    if ($userId == 'admin1')
+    {
+        $pdo = getAdminPDO();
+    }
+    else
+    {
+        $pdo = getPDO();
+    }
 
     try {
         $sql = "INSERT INTO User (UserId, Name, Phone, Password) VALUES( :userId, :name, :phone, :password)";
@@ -45,7 +67,16 @@ function ValidateUserId($userId) {
     if (empty($trimmeduserId)) {
         $userIdErr = "User ID cannot be blank.";
     } else {
-        $pdo = getPDO();
+        //$pdo = getPDO();
+        
+        if ($userId == 'admin1')
+        {
+            $pdo = getAdminPDO();
+        }
+        else
+        {
+            $pdo = getPDO();
+        }
 
         // Use prepared statement to prevent SQL injection
         $stmt = $pdo->prepare("SELECT UserId FROM User WHERE UserId = :userId");
@@ -134,7 +165,15 @@ function ValidateLoginPassword($password) {
 }
 
 function ValidateLoginCredential($userId, $password) {
-    $pdo = getPDO();
+    //$pdo = getPDO();
+    if ($userId == 'admin1')
+    {
+        $pdo = getAdminPDO();
+    }
+    else
+    {
+        $pdo = getPDO();
+    }
     $sql = "SELECT * FROM User WHERE UserId = :userId AND Password = :password";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['userId' => $userId, 'password' => $password]);
@@ -153,6 +192,7 @@ function getAccessibilities() {
     $accessibilities = array();
 
     $pdo = getPDO();
+    
 
     $sql = "SELECT * FROM Accessibility";
 
@@ -177,7 +217,15 @@ function ValidateTitle($title) {
 }
 
 function addAlbum($title, $userId, $description, $aCode) {
-    $pdo = getPDO();
+    //$pdo = getPDO();
+    if ($userId == 'admin1')
+    {
+        $pdo = getAdminPDO();
+    }
+    else
+    {
+        $pdo = getPDO();
+    }
 
     $sql = "INSERT INTO Album (Title, Description, Owner_Id, Accessibility_Code) VALUES( :title, :description, :userId, :accessibilityCode)";
     $stmt = $pdo->prepare($sql);
@@ -188,7 +236,15 @@ function addAlbum($title, $userId, $description, $aCode) {
 function getMyOwnAlbums($userId) {
     $albums = array();
 
-    $pdo = getPDO();
+    //$pdo = getPDO();
+    if ($userId == 'admin1')
+    {
+        $pdo = getAdminPDO();
+    }
+    else
+    {
+        $pdo = getPDO();
+    }
 
     $sql = "SELECT * FROM Album WHERE Owner_Id = :userId ";
 
@@ -208,6 +264,7 @@ function getAllAlbums() {
     $albums = array();
 
     $pdo = getPDO();
+    
 
     $sql = "SELECT * FROM Album";
 
@@ -225,7 +282,15 @@ function getAllAlbums() {
 function getFriendsAlbums($userId) {
     $albums = array();
 
-    $pdo = getPDO();
+    //$pdo = getPDO();
+    if ($userId == 'admin1')
+    {
+        $pdo = getAdminPDO();
+    }
+    else
+    {
+        $pdo = getPDO();
+    }
 
     $sql = "SELECT * FROM Album WHERE Owner_Id = :userId And Accessibility_Code ='shared'";
 
@@ -242,6 +307,7 @@ function getFriendsAlbums($userId) {
 
 function updateAlbum($aCode, $albumId) {
     $pdo = getPDO();
+    
 
     $sql = "UPDATE Album SET Accessibility_Code = :accessibilityCode WHERE Album_Id = :albumId";
     $stmt = $pdo->prepare($sql);
@@ -250,6 +316,7 @@ function updateAlbum($aCode, $albumId) {
 
 function getPictureNumByAlbumId($ablumId) {
     $pdo = getPDO();
+    
     $sql = "SELECT COUNT(*) FROM Picture WHERE Album_Id = :albumId";
 
     $stmt = $pdo->prepare($sql);
@@ -260,9 +327,18 @@ function getPictureNumByAlbumId($ablumId) {
     return $pictureNum;
 }
 
-function deleteAlbum($albumId) {
+function deleteAlbum($albumId, $userId) {
     $pictures = getAllPicturessByAlbumId($albumId);
-    $pdo = getPDO();
+    //$pdo = getPDO();
+    if ($userId == 'admin1')
+    {
+        $pdo = getAdminPDO();
+    }
+    else
+    {
+        $pdo = getPDO();
+    }
+    
 
     foreach ($pictures as $picture) {
         $pictureId = $picture->getPictureId();
@@ -283,6 +359,7 @@ function deleteAlbum($albumId) {
 
 function addPicture($albumId, $fileName, $title, $description) {
     $pdo = getPDO();
+    
     $sql = "INSERT INTO Picture (Album_Id, File_Name, Title, Description) VALUES( :Album_Id, :File_Name, :Title, :Description)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['Album_Id' => $albumId, 'File_Name' => $fileName, 'Title' => $title, 'Description' => $description]);
@@ -291,6 +368,7 @@ function addPicture($albumId, $fileName, $title, $description) {
 function getAllPicturessByAlbumId($albumId) {
     $pictures = array();
     $pdo = getPDO();
+    
     $sql = "SELECT * FROM Picture WHERE Album_Id = :albumId";
 
     $stmt = $pdo->prepare($sql);
@@ -305,6 +383,7 @@ function getAllPicturessByAlbumId($albumId) {
 
 function getPictureByFileName($fileName) {
     $pdo = getPDO();
+    
     $sql = "SELECT * FROM Picture WHERE File_Name = :fileName";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['fileName' => $fileName]);
@@ -320,6 +399,7 @@ function getPictureByFileName($fileName) {
 function getAllCommentsForSelectedPictureOnMyPicturePage($pictureId) {
     $comments = array();
     $pdo = getPDO();
+    
     $sql = $sql = "SELECT Comment_Id, Comment_Text, UserId, Name FROM Comment "
             . "INNER JOIN User ON Comment.Author_Id = User.UserId WHERE Picture_Id = :pictureId"
     ;
@@ -335,6 +415,7 @@ function getAllCommentsForSelectedPictureOnMyPicturePage($pictureId) {
 
 function addCommentOnMyPicturePage($authorId, $pictureId, $commentText) {
     $pdo = getPDO();
+    
     $sql = "INSERT INTO Comment (Author_Id, Picture_Id, Comment_Text) VALUES( :authorId, :pictureId, :commentText)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['authorId' => $authorId, 'pictureId' => $pictureId, 'commentText' => $commentText]);
@@ -401,7 +482,7 @@ function getFriendshipStatus() {
     $friendshipStatus = array();
 
     $pdo = getPDO();
-
+    
     $sql = "SELECT * FROM FriendshipStatus";
 
     $resultSet = $pdo->query($sql);
@@ -430,7 +511,15 @@ function getFriend($friendId) {
 }
 
 function ValidateFriendId($userId, $friendId) {
-    $pdo = getPDO();
+    //$pdo = getPDO();
+    if ($userId == 'admin1')
+    {
+        $pdo = getAdminPDO();
+    }
+    else
+    {
+        $pdo = getPDO();
+    }
     $sql1 = "SELECT * FROM User WHERE UserId = :friendId";
     $stmt1 = $pdo->prepare($sql1);
     $stmt1->execute(['friendId' => $friendId]);
@@ -457,14 +546,30 @@ function ValidateFriendId($userId, $friendId) {
 }
 
 function insertAcceptedFriendshipRecordForRequester($requesterId, $userId) {
-    $pdo = getPDO();
+    //$pdo = getPDO();
+    if ($userId == 'admin1')
+    {
+        $pdo = getAdminPDO();
+    }
+    else
+    {
+        $pdo = getPDO();
+    }
     $sql = "INSERT INTO Friendship (Friend_RequesterId, Friend_RequesteeId, Status) VALUES( :userId, :requesterId, 'accepted')";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['requesterId' => $requesterId, 'userId' => $userId]);
 }
 
 function sendFriendRequest($userId, $friendId, $friendName, $status) {
-    $pdo = getPDO();
+    //$pdo = getPDO();
+    if ($userId == 'admin1')
+    {
+        $pdo = getAdminPDO();
+    }
+    else
+    {
+        $pdo = getPDO();
+    }
     $sql = "INSERT INTO Friendship (Friend_RequesterId, Friend_RequesteeId, Status) VALUES( :userId, :friendId, :status)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['userId' => $userId, 'friendId' => $friendId, 'status' => $status]);     
@@ -486,19 +591,35 @@ function sendFriendRequest($userId, $friendId, $friendName, $status) {
 }
 
 function deleteFriend($friendId, $userId){
-	$pdo=getPDO();
-        $sql = "DELETE FROM Friendship "
-                        . "WHERE ((Friend_RequesterId = :userId AND Friend_RequesteeId= :friendId) "
-                        . "  OR (Friend_RequesterId = :friendId AND Friend_RequesteeId= :userId)) "
-                        . "    AND Status='accepted'";
-	$stmt=$pdo->prepare($sql);
-	$stmt->execute(['friendId' => $friendId, 'userId' => $userId]);  
+    //$pdo=getPDO();
+    if ($userId == 'admin1')
+    {
+        $pdo = getAdminPDO();
+    }
+    else
+    {
+        $pdo = getPDO();
+    }
+    $sql = "DELETE FROM Friendship "
+                    . "WHERE ((Friend_RequesterId = :userId AND Friend_RequesteeId= :friendId) "
+                    . "  OR (Friend_RequesterId = :friendId AND Friend_RequesteeId= :userId)) "
+                    . "    AND Status='accepted'";
+    $stmt=$pdo->prepare($sql);
+    $stmt->execute(['friendId' => $friendId, 'userId' => $userId]);  
 }
 
 function getFriendRequestersToAUser($userId) {
     $friendShipsRequested = array();
 
-    $pdo = getPDO();
+    //$pdo = getPDO();
+    if ($userId == 'admin1')
+    {
+        $pdo = getAdminPDO();
+    }
+    else
+    {
+        $pdo = getPDO();
+    }
     $sql = "SELECT Friend_RequesterId, Friend_RequesteeId, User.Name, Status FROM Friendship as fs
         inner join User on Friend_RequesterId = User.UserId
         WHERE Friend_RequesteeId = :userId AND Status = 'request'";
@@ -513,14 +634,30 @@ function getFriendRequestersToAUser($userId) {
 }
 
 function acceptFriendRequest($requesterId, $userId) {
-    $pdo = getPDO();
+    //$pdo = getPDO();
+    if ($userId == 'admin1')
+    {
+        $pdo = getAdminPDO();
+    }
+    else
+    {
+        $pdo = getPDO();
+    }
     $sql = "UPDATE Friendship SET Status = 'accepted' WHERE Friend_RequesterId = :requesterId AND Friend_RequesteeId = :userId";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['requesterId' => $requesterId, 'userId' => $userId]);
 }
 
 function denyFriendRequest($requesterId, $userId) {
-    $pdo = getPDO();
+    //$pdo = getPDO();
+    if ($userId == 'admin1')
+    {
+        $pdo = getAdminPDO();
+    }
+    else
+    {
+        $pdo = getPDO();
+    }
     $sql = "DELETE FROM Friendship WHERE Friend_RequesterId = :requesterId AND Friend_RequesteeId = :userId AND Status='request'";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['requesterId' => $requesterId, 'userId' => $userId]);
@@ -528,7 +665,15 @@ function denyFriendRequest($requesterId, $userId) {
 
 function getFriendList($userId) {
     $friends = array();
-    $pdo = getPDO();
+    //$pdo = getPDO();
+    if ($userId == 'admin1')
+    {
+        $pdo = getAdminPDO();
+    }
+    else
+    {
+        $pdo = getPDO();
+    }
     $sql = "SELECT Friend_RequesterId, Friend_RequesteeId, User.Name, Status FROM Friendship as fs
         inner join User on Friend_RequesterId = User.UserId
         WHERE (Friend_RequesteeId = :userId) AND Status = 'accepted'";
@@ -543,6 +688,7 @@ function getFriendList($userId) {
 
 function getNumbersOfSharedAlbumsOfFriends ($friendId) {
     $pdo = getPDO();
+
     $sql = "SELECT COUNT(*) FROM Album WHERE Owner_Id = :friendId AND Accessibility_Code= 'shared'";
 
     $stmt = $pdo->prepare($sql);

@@ -8,7 +8,7 @@ if (isset($_SESSION["user"])) {
     $user = $_SESSION["user"];
     if ($user->getIsAdmin())
     {
-        header("Location: AdminPage.php");
+        header("Location: Admin.php");
         exit();
     }
 } else {

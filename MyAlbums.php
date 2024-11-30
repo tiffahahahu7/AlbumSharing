@@ -7,7 +7,7 @@
         $user = $_SESSION["user"];
         if ($user->getIsAdmin())
         {
-            header("Location: AdminPage.php");
+            header("Location: Admin.php");
             exit();
         }
     } else {
@@ -37,7 +37,7 @@
         }        
         //delete the album with the corresponding Id and update all albums
         if(isset($_POST["deleteBtn"])){    
-            deleteAlbum($singleAlbumId);
+            deleteAlbum($singleAlbumId, $user->getUserId());
             $albums = getMyOwnAlbums($user->getUserId());            
         }
         //save accessibility change to the albums
