@@ -19,28 +19,56 @@
     $titleErr = "";
     
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-       $title = $_POST["title"];  
-       $accessibilityCode = $_POST["accessibility"];
-       $description = $_POST["description"];  
-       //clear all input fields
-       if(isset($_POST["clearBtn"])){ 
-           $title = $description = "";
-       }
-       //validate the input fields and if passed, add the album to the database
-       if(isset($_POST["submitBtn"])){ 
-           $titleErr = ValidateUserId($title);
-           if(empty($titleErr)){
-                try {
-                    addAlbum($title, $user->getUserId(), $description, $accessibilityCode);
-                    header("Location: MyAlbums.php");
-                    exit();                      
-                }
-                catch (Exception $e)
-                {                
-                    die("The system is currently not available, try again later");
-                }                  
-           }
-       }
+//       $title = $_POST["title"];
+//       $accessibilityCode = $_POST["accessibility"];
+//       $description = $_POST["description"];  
+//       //clear all input fields
+//       if(isset($_POST["clearBtn"])){ 
+//           $title = $description = "";
+//       }
+//       //validate the input fields and if passed, add the album to the database
+//       if(isset($_POST["submitBtn"])){ 
+//           $titleErr = ValidateUserId($title);
+//           if(empty($titleErr)){
+//                try {
+//                    addAlbum($title, $user->getUserId(), $description, $accessibilityCode);
+//                    header("Location: MyAlbums.php");
+//                    exit();                      
+//                }
+//                catch (Exception $e)
+//                {                
+//                    die("The system is currently not available, try again later");
+//                }                  
+//           }
+//       }
+        # vulnerable
+        $title = $_POST["title"];
+        $description = $_POST["description"];
+        
+        # secure
+//        $title = strip_tags(htmlspecialchars($_POST["title"]));
+//        $description = strip_tags(htmlspecialchars($_POST["description"]));
+        
+        $accessibilityCode = $_POST["accessibility"];
+        //clear all input fields
+        if(isset($_POST["clearBtn"])){ 
+            $title = $description = "";
+        }
+        //validate the input fields and if passed, add the album to the database
+        if(isset($_POST["submitBtn"])){ 
+            $titleErr = ValidateUserId($title);
+            if(empty($titleErr)){
+                 try {
+                     addAlbum($title, $user->getUserId(), $description, $accessibilityCode);
+                     header("Location: MyAlbums.php");
+                     exit();                      
+                 }
+                 catch (Exception $e)
+                 {                
+                     die("The system is currently not available, try again later");
+                 }                  
+            }
+        }
     }           
     include("./common/header.php");  
 ?>

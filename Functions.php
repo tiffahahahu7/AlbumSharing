@@ -25,13 +25,25 @@ function getUserByIdAndPassword($userId, $password) {
         $pdo = getPDO();
     }
 
-    $sql = "SELECT UserId, Name, Phone, isAdmin FROM User WHERE UserId = :userId AND Password = :password";
-
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['userId' => $userId, 'password' => $password]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($row) {
-        return new User($row['UserId'], $row['Name'], $row['Phone'], $row['isAdmin']);
+    # secured
+//    $sql = "SELECT UserId, Name, Phone, isAdmin FROM User WHERE UserId = :userId AND Password = :password";
+//
+//    $stmt = $pdo->prepare($sql);
+//    $stmt->execute(['userId' => $userId, 'password' => $password]);
+//    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+//    if ($row) {
+//        return new User($row['UserId'], $row['Name'], $row['Phone'], $row['isAdmin']);
+//    } else {
+//        return null;
+//    }
+    
+    # vulnerable
+    $sql = "SELECT UserId, Name, Phone, isAdmin FROM User WHERE UserId = '$userId'";
+    $result = $pdo->query($sql);
+    if ($result) {
+        foreach ($result as $row) {
+            return new User($row['UserId'], $row['Name'], $row['Phone'], $row['isAdmin']);
+        }
     } else {
         return null;
     }
@@ -166,6 +178,7 @@ function ValidateLoginPassword($password) {
 
 function ValidateLoginCredential($userId, $password) {
     //$pdo = getPDO();
+    
     if ($userId == 'admin1')
     {
         $pdo = getAdminPDO();
@@ -174,16 +187,28 @@ function ValidateLoginCredential($userId, $password) {
     {
         $pdo = getPDO();
     }
-    $sql = "SELECT * FROM User WHERE UserId = :userId AND Password = :password";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['userId' => $userId, 'password' => $password]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($row) {
+    
+    # secure
+//    $sql = "SELECT * FROM User WHERE UserId = :userId AND Password = :password";
+//    $stmt = $pdo->prepare($sql);
+//    $stmt->execute(['userId' => $userId, 'password' => $password]);
+//    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+//
+//    if ($row) {
+//        $credentialErr = "";
+//    } else {
+//        $credentialErr = "Incorrect user ID and/or Password!";
+//    }
+    
+    # vulnerable
+    $sql = "SELECT * FROM User WHERE UserId = '$userId' AND Password = '$password'";
+    $result = $pdo->query($sql);
+    if ($result) {
         $credentialErr = "";
     } else {
         $credentialErr = "Incorrect user ID and/or Password!";
     }
+    
     return $credentialErr;
 }
 
