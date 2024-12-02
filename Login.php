@@ -24,8 +24,14 @@
         $userIdErr = ValidateLoginUserId($userId);
         $passwordErr = ValidateLoginPassword($password);  
         $credentialErr = ValidateLoginCredential($userId, $hashedPassword);
+        
+        $recaptchaSecret = '6LdK4W4qAAAAAC8CclxPZr9Kht2lzenp6LulnJkN';
+        $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
+        $url = 'https://www.google.com/recaptcha/api/siteverify';
+        $response = file_get_contents($url . '?secret=' . $recaptchaSecret . '&response=' . $recaptchaResponse);
+        $responseKeys = json_decode($response, true);
 
-        if(empty($userIdErr) && empty($passwordErr) && empty($credentialErr)){
+        if(empty($userIdErr) && empty($passwordErr) && empty($credentialErr) && !$responseKeys['success']){
             try {
                 $user = getUserByIdAndPassword($userId, $hashedPassword);
             }
