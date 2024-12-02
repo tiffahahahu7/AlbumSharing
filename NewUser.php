@@ -26,7 +26,14 @@ if (isset($submitBtn)) {
     $passwordErr = ValidatePassword($password);
     $rePasswordErr = ValidateRePassword($password, $rePassword);
 
-    if (empty($userIdErr) && empty($nameErr) && empty($phoneNumberErr) && empty($passwordErr) && empty($rePasswordErr)) {
+    $recaptchaSecret = '6LdK4W4qAAAAACA1jVpg0P5w8YagyGJ1Hl2Xy-aK';
+    $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
+    $url = 'https://www.google.com/recaptcha/api/siteverify';
+    $response = file_get_contents($url . '?secret=' . $recaptchaSecret . '&response=' . $recaptchaResponse);
+    $responseKeys = json_decode($response, true);
+
+
+    if (empty($userIdErr) && empty($nameErr) && empty($phoneNumberErr) && empty($passwordErr) && empty($rePasswordErr) && $responseKeys['success']) {
         try {
             addNewUser($userId, $name, $phoneNumber, $hashedPassword);
             $user = getUserByIdAndPassword($userId, $hashedPassword);
