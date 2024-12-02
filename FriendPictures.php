@@ -148,7 +148,7 @@ include("./common/header.php");
                     <?php
                     if (isset($_SESSION["selectedPicture"])) {
                         $selectedPicture = $_SESSION["selectedPicture"];
-                        $selectedPictureDescription = $selectedPicture->getDescription();
+                        $selectedPictureDescription = strip_tags(htmlspecialchars($selectedPicture->getDescription()));
                         if (!empty($selectedPictureDescription)) {
                             echo '<label class="col-form-label">Description:</label>';
                             echo "<p>$selectedPictureDescription</p>";
@@ -171,7 +171,7 @@ include("./common/header.php");
                             $pictures = getAllPicturessByAlbumId($_SESSION["albumId"]);
                             // Check if the array is not empty before accessing its elements
                             if (!empty($pictures)) {
-                                $firstPictureDescription = $pictures[0]->getDescription();
+                                $firstPictureDescription = strip_tags(htmlspecialchars($pictures[0]->getDescription()));
                                 $comments = getAllCommentsForSelectedPictureOnMyPicturePage($pictures[0]->getPictureId());
                                 if (!empty($firstPictureDescription)) {
                                     echo '<label class="col-form-label">Description:</label>';
