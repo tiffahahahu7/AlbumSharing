@@ -79,7 +79,7 @@
     <div class="row form-group">
         <label for="password" class="col-md-3 col-form-label">Password: </label>
         <div class="col-md-4">
-            <input type="password" class="form-control" id="password" name="password" value="<?php echo isset($password)? $password : ''; ?>">
+            <input type="text" class="form-control" id="password" name="password" value="<?php echo isset($password)? $password : ''; ?>">
         </div>
         <?php
           if (!empty($passwordErr)){
@@ -90,11 +90,12 @@
         ?>         
     </div>
     <br>
-    <div class="g-recaptcha" data-sitekey="6LdK4W4qAAAAAC8CclxPZr9Kht2lzenp6LulnJkN"></div>
+    
     <br>
     <button type="submit" name="submitBtn" class="btn btn-primary">Submit</button> 
     <button type="submit" name="clearBtn" class="btn btn-danger">Clear</button>    
 </form>
 </div>
+
 
 <?php include('./common/footer.php'); ?>

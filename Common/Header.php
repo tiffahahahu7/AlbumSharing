@@ -58,10 +58,3 @@
       </div>  
     </nav>
 
-<?php
-// random phishing tip
-$images = ['Common/img/tip-1.png', 'Common/img/tip-2.png', 'Common/img/tip-3.png'];
-$randomIndex = array_rand($images);
-$randomImage = $images[$randomIndex];
-echo "<img class='random-tip' src='$randomImage' alt='Random Tip'>";
-?>
