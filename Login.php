@@ -31,6 +31,7 @@
         $response = file_get_contents($url . '?secret=' . $recaptchaSecret . '&response=' . $recaptchaResponse);
         $responseKeys = json_decode($response, true);
 
+        
         if(empty($userIdErr) && empty($passwordErr) && empty($credentialErr) && $responseKeys['success']){
             try {
                 $user = getUserByIdAndPassword($userId, $hashedPassword);
