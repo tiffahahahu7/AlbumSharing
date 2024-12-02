@@ -78,7 +78,8 @@
                     </div>";                          
           }
         ?>         
-    </div>  
+    </div>
+    <div class="g-recaptcha" data-sitekey="6LdK4W4qAAAAAC8CclxPZr9Kht2lzenp6LulnJkN"></div>
     <button type="submit" name="submitBtn" class="btn btn-primary">Submit</button> 
     <button type="submit" name="clearBtn" class="btn btn-danger">Clear</button>    
 </form>
