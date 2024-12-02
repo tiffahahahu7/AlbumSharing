@@ -26,7 +26,14 @@ if (isset($submitBtn)) {
     $passwordErr = ValidatePassword($password);
     $rePasswordErr = ValidateRePassword($password, $rePassword);
 
-    if (empty($userIdErr) && empty($nameErr) && empty($phoneNumberErr) && empty($passwordErr) && empty($rePasswordErr)) {
+    $recaptchaSecret = '6LdK4W4qAAAAACA1jVpg0P5w8YagyGJ1Hl2Xy-aK';
+    $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
+    $url = 'https://www.google.com/recaptcha/api/siteverify';
+    $response = file_get_contents($url . '?secret=' . $recaptchaSecret . '&response=' . $recaptchaResponse);
+    $responseKeys = json_decode($response, true);
+
+
+    if (empty($userIdErr) && empty($nameErr) && empty($phoneNumberErr) && empty($passwordErr) && empty($rePasswordErr) && $responseKeys['success']) {
         try {
             addNewUser($userId, $name, $phoneNumber, $hashedPassword);
             $user = getUserByIdAndPassword($userId, $hashedPassword);
@@ -42,10 +49,8 @@ if (isset($submitBtn)) {
 }
 ?>
 <div class="container">
-    <br>
     <h1>Sign Up</h1>
-    <br>
-    <p>All fields are required</p>
+    <h3>All fields are required</h3>
     <br>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
         <div class="row form-group">
@@ -112,9 +117,16 @@ if (isset($submitBtn)) {
                     </div>";
             }
             ?>        
-        </div>    
+        </div>  
+        <br>
+        <div class="g-recaptcha" data-sitekey="6LdK4W4qAAAAAC8CclxPZr9Kht2lzenp6LulnJkN"></div>
+        <br>  
         <button type="submit" name="submitBtn" class="btn btn-primary">Submit</button> 
         <button type="submit" name="clearBtn" class="btn btn-danger">Clear</button>    
     </form>
+</div>
+
+<div class="phishing-pamphlet">
+    <img src="Common/img/internet-safety-tips.png" alt="Phishing Pamphlet">
 </div>
 <?php include('./common/footer.php'); ?>

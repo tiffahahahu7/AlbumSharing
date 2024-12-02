@@ -67,7 +67,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 include("./common/header.php");
 ?>
 <div class="container">
-    <br>
     <h1 class="text-center">Your friend <?php echo getFriend($friendId)->getFriendName(); ?>'s Shared Pictures</h1>
     <br>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" id="albumForm">
@@ -190,7 +189,6 @@ include("./common/header.php");
                     <button type="submit" name="albumChangeBtn" id="albumSelectionChange" hidden></button>
                     <button type="submit" name="thumbnailChangeBtn" id="thumbnailChange" hidden></button>
                 </div>
-            
         </div>
     </form>
 </div>
