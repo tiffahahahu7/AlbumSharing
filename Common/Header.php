@@ -31,7 +31,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" style="padding: 10px; height: 80px;" href="Index.php">
+          <a class="navbar-brand" style="padding: 10px; height: 80px;" href="index.php">
               <img src="Common/img/BeeYourself_Logo.png" 
                    alt="Bee Yourself Logo" style="max-width:100%; max-height:100%;"/>
           </a>    
